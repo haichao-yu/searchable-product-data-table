@@ -25,7 +25,10 @@ class ProductTable extends React.Component {
     render() {
         var rows = [];
         var lastCategory = null;
-        this.props.products.forEach(function(product) {
+        this.props.products.forEach((product) => {
+            if (product.name.indexOf(this.props.filterText) === -1 || (!product.stocked && this.props.inStockOnly)) {
+                return;
+            }
             if (product.category !== lastCategory) {
                 rows.push(<ProductCategoryRow category={product.category} key={product.category} />);
             }
@@ -50,9 +53,9 @@ class SearchBar extends React.Component {
     render() {
         return (
             <form>
-                <input type="text" placeholder="Search..." />
+                <input type="text" placeholder="Search..." value={this.props.filterText} />
                 <p>
-                    <input type="checkbox" />
+                    <input type="checkbox" checked={this.props.inStockOnly} />
                     {' '}
                     Only show products in stock
                 </p>
@@ -62,11 +65,26 @@ class SearchBar extends React.Component {
 }
 
 class FilterableProductTable extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            filterText: '',
+            inStockOnly: false
+        };
+    }
+
     render() {
         return (
             <div>
-                <SearchBar />
-                <ProductTable products={this.props.products} />
+                <SearchBar
+                    filterText={this.state.filterText}
+                    inStockOnly={this.state.inStockOnly}
+                />
+                <ProductTable
+                    products={this.props.products}
+                    filterText={this.state.filterText}
+                    inStockOnly={this.state.inStockOnly}
+                />
             </div>
         );
     }
