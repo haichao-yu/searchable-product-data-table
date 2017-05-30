@@ -1,6 +1,3 @@
-Searchable Product Data Table
----
-
 This is a toy project of React built with a minimal React starter.
 
 The point of this project is to help you to be familiar with the steps of building a React App.
